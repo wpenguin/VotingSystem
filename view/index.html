@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>Voting System</title>
+	</head>
+	<link rel="stylesheet" type="text/css" href="./css/index.css"/>
+	<script src="./js/index.js" type="text/javascript" charset="utf-8"></script>
+	<body>
+		<div class="box">
+			<div class="box_top">
+				<strong style="margin-left: 100px;">在&nbsp;线&nbsp;投&nbsp;票&nbsp;管&nbsp;理&nbsp;系&nbsp;统</strong>
+			</div>
+			<div class="box_bottom">
+				<div class="box_bottom_left">
+					<ul>
+						<li class="li">参与投票</li>
+						<li class="li">添加票题</li>
+						<li class="li">查看票题</li>
+						<input type="text" style="display: none;" id="islogin" value="<?php echo $login; ?>" />
+					</ul>
+				</div>
+				<div class="box_bottom_right">
+					<?php if($login){ ?>
+						<div class="right_box" style="<?php if(input_get('page1') == null){echo 'display: none;'; } ?>">
+							<table border="0" cellspacing="0" cellpadding="0" style="margin-top: 10px;">
+								<tr>
+									<th>id</th>
+									<th style="width: 300px;">票题</th>
+									<th>操作</th>
+								</tr>
+								<?php foreach($res1 as $row){ ?>
+									<tr>
+										<td><?php echo $row['id']; ?></td>
+										<td><?php echo $row['title']; ?></td>
+										<td style="">
+											<a href="index.php?id1=<?php echo  $row['id']; ?>">参与</a>
+										</td>
+									</tr>
+								<?php } ?>
+							</table>
+							<div class="userpage">
+								<?php echo $page_html1; ?>
+							</div>
+						</div>
+						<div class="right_box" style="display: none;">
+							<form action="voting_topics_add.php" method="post">
+								<div class="box1" style="width: 550px;">
+									<table id="table" border="0" cellspacing="0" cellpadding="0" style="margin-top: 0px;">
+										<tr><td><label for="">票题：</label></td><td><input type="text" required="required" name="title" id="t" value=""/></td></tr>
+										<tr><td><label for="">最多几选：</label></td><td><input type="text" required="required" readonly="readonly" name="max" id="t" value="1"/></td></tr>
+										<tr><td><label for="">参与人数：</label></td><td><input type="text" required="required" name="count" id="t" value=""/></td></tr>
+										<tr class="tr"><td><label for="">选项1：</label></td><td><input type="text" required="required" name="option[]" id="t" class="tt" value=""/></td></tr>
+										<tr class="tr"><td><label for="">选项2：</label></td><td><input type="text" required="required" name="option[]" id="t" class="tt" value=""/></td></tr>
+									</table>
+								</div>
+								<div class="" style="float: right;margin-top: -280px;margin-right:50px;width: 100px;">
+									<input type="submit" class="ttt" value="确认添加"/>
+									<input type="button" id="dada" class="ttt" value="添加选项" style="margin-top: 30px;" />
+									<input type="button" id="xiao" class="ttt" value="删除选项" style="margin-top: 30px;" />
+								</div>
+							</form>
+						</div>
+						<div class="right_box" style="<?php if(input_get('page2') == null){echo 'display: none;'; } ?>">
+							<table border="0" cellspacing="0" cellpadding="0" style="margin-top: 10px;">
+								<tr>
+									<th>id</th>
+									<th style="width: 300px;">票题</th>
+									<th>操作</th>
+								</tr>
+								<?php foreach($res2 as $row){ ?>
+									<tr>
+										<td><?php echo $row['id']; ?></td>
+										<td><?php echo $row['title']; ?></td>
+										<td style="">
+											<a href="index.php?id2=<?php echo $row['id']; ?>">查看</a>
+										</td>
+									</tr>
+								<?php } ?>
+							</table>
+							<div class="userpage">
+								<?php echo $page_html2; ?>
+							</div>
+						</div>
+						<div class="right_box" style="<?php if(input_get('id1') == null){echo 'display: none;'; } ?>">
+							<form action="voting.php" method="post">
+								<div class="box1" style="width: 330px;">
+									<table id="table" border="0" cellspacing="0" cellpadding="0" style="margin-top: 0px;">
+										<tr><td><label>票题：</label><input type="" style="display: none;" name="vid" id="vid" value="<?php echo $id1; ?>" /></td><td><input type="text" name="title" id="t" value="<?php echo $row1['title']; ?>"/></td><td><?php echo $row1['max_check']; ?>选</td></tr>
+										<?php foreach($rows1 as $rows){ ?>
+											<tr class="tr"><td><input required="required" type="radio" name="a" id="a" value="<?php echo $rows['id']; ?>" /></td><td><input type="button" style="background: #fff;" id="t" class="tt" value="<?php echo $rows['option']; ?>"/></td></tr>
+										<?php } ?>
+									</table>
+								</div>
+								<div class="" style="float: right;margin-top: -280px;margin-right:50px;width: 120px;">
+									<img src="verification_code.php" id="code_img" style="margin-left: 16px;width: 80px;"/>
+									<div id="code_box">
+										<a href="#" id="change"><p>看不清，换一张</p></a>
+									</div>
+									<input type="text" name="code" id="" value="" style="width: 114px;height: 26px;border-radius: 12px;padding-left: 8px;"/>
+									<input type="submit" class="ttt" value="投票" style="margin-left: 8px;margin-top: 10px;"/>
+								</div>
+							</form>
+						</div>
+						<div class="right_box" style="<?php if(input_get('id2') == null){echo 'display: none;'; } ?>">
+							<div class="box1" style="width: 550px;">
+								<table id="table" border="0" cellspacing="0" cellpadding="0" style="margin-top: 0px;">
+									<tr><td><label>票题：</label></td><td><input type="text" name="title" id="t" value="<?php echo $row2['title']; ?>"/></td></tr>
+									<?php foreach($rows2 as $rows){ ?>
+										<tr class="tr">
+											<td></td>
+											<td><input type="button" style="background: #fff;" id="t" class="tt" value="<?php echo $rows['option']; ?>"/></td>
+											<td>
+												<div id="" style="width: 200px;height: 30px;border-radius: 15px;">
+													<div id="" style="width: <?php echo ($rows['count']/$i*200).'px'; ?>;height: 30px;border-radius: 15px;background: #03E9F4;">
+														<span id="" style="margin-left: -70px;padding-top: 4px;">
+															<?php echo $rows['count']; ?>&nbsp;/
+															<?php echo round($rows['count']/$i,2)*100; ?>%
+														</span>
+													</div>
+												</div>
+											</td>
+										</tr>
+									<?php } ?>
+								</table>
+							</div>
+						</div>
+					<?php }else{ ?>
+						<div id="unlogin" class="right_box" style="display: none">
+							<strong>无权观看！请进行<a href="login.php" style="color: red;">登录</a>！</strong>
+						</div>
+						<div id="unlogin" class="right_box" style="display: none">
+							<strong>无权观看！请进行<a href="login.php" style="color: red;">登录</a>！</strong>
+						</div>
+						<div id="unlogin" class="right_box" style="display: none">
+							<strong>无权观看！请进行<a href="login.php" style="color: red;">登录</a>！</strong>
+						</div>
+					<?php } ?>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>
